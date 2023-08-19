@@ -12,10 +12,9 @@ def user_logout(request):
 #detail_template
 def detail(request, post_id):
     post = Post.objects.get(id=post_id)
-
-    comments = Comment.objects.filter(post_id=post.id)
+    comments = Comment.objects.all()
     # if comment_model.exists():
-    return render(request, 'posts/detail.html', {'post':post} )
+    return render(request, 'posts/detail.html', {'post':post,'comments':comments} )
 
     # return render(request, 'posts/detail.html', {'post':post})
 # Create your views here.
@@ -279,7 +278,7 @@ def comment_view(request,post_id,author):
     if request.method == "POST":
         post = Post.objects.get(id=post_id)
         user_comment= request.POST['user_comment']  
-        comment_model=Comment(user=author,comment=user_comment,post= post,post_id=post_id)
+        comment_model=Comment(user=author,comment=user_comment,post= post)
         comment_model.save()
-        return render(request, 'posts/detail.html',{'post':post,'author':comment_model.user,'user_comment':comment_model.comment} )
+        return redirect( 'detail',post_id=post_id)
     

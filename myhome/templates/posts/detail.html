@@ -5,7 +5,7 @@
   <p class="post_author">{{ post.author }}</p>
   <img src="{{ post.image }}" alt="" class="image"/><br><br>
   <p>{{post.description}}</p>
-  
+  {% if user.is_authenticated %}
   <form method="POST" action="{% url 'comment' post_id=post.id author=user.username %}">
     {% csrf_token %}
     <label for="user_comment">comment</label>
@@ -13,6 +13,17 @@
     <button type="submit">POST</button>
   </form><br><br><br><br>
 
-  <p></p>
-  <p>{{ user_comment }}</p>
+  {% for comment in comments %}
+    <p>{{ comment.user }}</p>
+    <p>{{ comment.comment }}</p>
+  {%endfor %}
+  {% else %}
+  <a href="127.0.0.1:8000/login">Login to comment</a>
+  {% endif %}
+
+  {% for comment in comments %}
+    <p>{{ comment.user }}</p>
+    <p>{{ comment.comment }}</p>
+    <hr>
+  {%endfor %}
 {% endblock %}
